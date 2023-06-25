@@ -3,8 +3,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
 	id("org.springframework.boot") version "3.0.5"
 	id("io.spring.dependency-management") version "1.1.0"
-    java
-    id("com.netflix.dgs.codegen") version "5.5.0"
+	java
 }
 
 
@@ -18,17 +17,17 @@ repositories {
 val federation_jvm_version: String = project.property("federation-jvm.version").toString()
 dependencies {
     implementation("com.apollographql.federation:federation-graphql-java-support:$federation_jvm_version")
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-graphql")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-micrometer")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux")
-    testImplementation("org.springframework.graphql:spring-graphql-test")
+	testImplementation("org.springframework.graphql:spring-graphql-test")
 }
 
 java {
@@ -41,5 +40,5 @@ tasks.withType<Test> {
 }
 
 tasks.named<BootJar>("bootJar") {
-    archiveFileName.set("products.jar")
+    archiveFileName.set("users.jar")
 }

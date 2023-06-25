@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@graphql-mesh/cli": "^0.83.3",
+    "@graphql-mesh/plugin-prometheus": "^0.94.0",
+    "graphql": "^16.6.0",
+    "prom-client": "^14.2.0"
+  }
+}

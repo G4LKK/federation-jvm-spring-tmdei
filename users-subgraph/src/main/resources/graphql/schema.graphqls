@@ -1,0 +1,30 @@
+type Query {
+    user(id: ID!): User
+    users: [User!]!
+}
+
+type Mutation{
+    addUser(reviewId: String!,id: String!, age: Int!, name: String!) : User
+}
+
+type Review @key(fields: "id") @extends {
+    id: ID! @external
+    user: User
+}
+
+type User @key(fields: "id") @cacheControl(maxAge: 30){
+    id: ID!
+    name: String!
+    age: Int
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+  inheritMaxAge: Boolean
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION

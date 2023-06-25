@@ -8,3 +8,7 @@ subgraphs:
     routing_url: http://reviews:8081/graphql
     schema:
       file: ./reviews-subgraph/src/main/resources/graphql/schema.graphqls
+  users:
+    routing_url: http://users:8082/graphql
+    schema:
+      file: ./users-subgraph/src/main/resources/graphql/schema.graphqls

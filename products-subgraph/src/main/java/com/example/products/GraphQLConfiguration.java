@@ -5,9 +5,16 @@ import org.springframework.boot.autoconfigure.graphql.GraphQlSourceBuilderCustom
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * GraphQL Configuration class
+ */
 @Configuration
 public class GraphQLConfiguration {
 
+  /**
+   * Method to handle the GraphQL Federation transformations
+   * @return Source Builder Customizer
+   */
   @Bean
   public GraphQlSourceBuilderCustomizer federationTransform() {
     return builder -> {

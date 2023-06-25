@@ -1,3 +1,12 @@
+type Query {
+    review(id: ID!): Review
+    reviews: [Review!]!
+}
+
+type Mutation{
+    addReview(productId: String!,id: String!, starRating: Int!, text: String!) : Review
+}
+
 type Product @key(fields: "id") @extends {
     id: ID! @external
     reviews: [Review!]!

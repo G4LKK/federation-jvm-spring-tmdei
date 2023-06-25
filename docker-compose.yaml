@@ -37,3 +37,16 @@ services:
       interval: 5s
       timeout: 1s
       retries: 10
+  users:
+    build:
+      context: .
+      dockerfile: users-subgraph/Dockerfile
+      args:
+        JAR_FILE: ./users.jar
+    ports:
+      - 8082:8082
+    healthcheck:
+      test: [ "CMD", "curl", "http://users:8082/actuator/health" ]
+      interval: 5s
+      timeout: 1s
+      retries: 10

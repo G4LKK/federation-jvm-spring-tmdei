@@ -2,3 +2,16 @@ spring:
   graphql:
     graphiql:
       enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+#    dgs-graphql:
+#      enabled: true
+#      instrumentation:
+#        enabled: true
+    distribution:
+        slo[http.server.requests]: "75ms, 100ms, 150ms, 200ms, 250ms, 300ms, 350ms, 400ms"

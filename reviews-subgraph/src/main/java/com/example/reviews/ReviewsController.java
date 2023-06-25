@@ -2,25 +2,77 @@ package com.example.reviews;
 
 import com.example.reviews.model.Review;
 import com.example.reviews.model.Product;
+import com.example.reviews.repository.ReviewRepository;
+import com.example.reviews.repository.ReviewRepositoryImpl;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
+/**
+ * Review Controller
+ */
+@AllArgsConstructor
 @Controller
 public class ReviewsController {
 
-  private final Map<String, List<Review>> REVIEWS = Map.of(
-    "2", List.of(new Review("1020", "Very cramped :( Do not recommend.", 2), new Review("1021", "Got me to the Moon!", 4)),
-    "3", List.of(new Review("1030", 3)),
-    "4", List.of(new Review("1040", 5), new Review("1041", "Reusable!", 5), new Review("1042", 5)),
-    "5", List.of(new Review("1050", "Amazing! Would Fly Again!", 5), new Review("1051", 5))
-  );
+  /**
+   * Review Repository to be used
+   */
+  @Autowired
+  private final ReviewRepository repo;
 
   @SchemaMapping
-  public List<Review> reviews(Product show) {
-    return REVIEWS.getOrDefault(show.id(), Collections.emptyList());
+  public CompletableFuture<List<Review>> reviews(Product show) {
+    return CompletableFuture.supplyAsync(() -> {
+      return repo.findReviewsByProduct(show);
+    });
+  }
+
+  /**
+   * GraphQL Query to find all available Reviews
+   *
+   * @return All Reviews
+   */
+  @QueryMapping
+  public CompletableFuture<List<Review>> reviews() {
+    return CompletableFuture.supplyAsync(() -> {
+      return repo.findAll();
+    });
+  }
+
+  /**
+   * GraphQL Query to find a specific Review by its ID
+   *
+   * @param id Id to look for
+   * @return Found Review
+   */
+  @QueryMapping
+  public CompletableFuture<Review> review(@Argument String id) {
+    return CompletableFuture.supplyAsync(() -> {
+      return repo.findReviewById(id);
+    });
+  }
+
+  /**
+   * GraphQL Mutation to add Review and Reivew to Product association
+   *
+   * @param productId  Product Id
+   * @param id         New Review ID
+   * @param starRating New Review Star Rating
+   * @param text       New Review Text
+   * @return Newly created Review
+   */
+  @MutationMapping
+  public CompletableFuture<Review> addReview(@Argument String productId, @Argument String id, @Argument int starRating, @Argument String text) {
+    return CompletableFuture.supplyAsync(() -> {
+      return repo.addReview(productId, id, text, starRating);
+    });
   }
 }
